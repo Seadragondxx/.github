@@ -1,0 +1,47 @@
+# DigitalOcean App Platform Specification
+# See https://docs.digitalocean.com/products/app-platform/reference/app-spec/
+
+name: fitgen-app
+region: nyc
+
+services:
+  - name: web
+    dockerfile_path: Dockerfile
+    github:
+      repo: your-username/your-repo
+      branch: main
+      deploy_on_push: true
+    http_port: 3000
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /
+    health_check:
+      http_path: /api/health
+      initial_delay_seconds: 10
+      period_seconds: 30
+      timeout_seconds: 5
+      success_threshold: 1
+      failure_threshold: 3
+    envs:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        scope: RUN_TIME
+        type: SECRET
+      - key: AUTH_SECRET
+        scope: RUN_TIME
+        type: SECRET
+      - key: AUTH_GITHUB_ID
+        scope: RUN_TIME
+        type: SECRET
+      - key: AUTH_GITHUB_SECRET
+        scope: RUN_TIME
+        type: SECRET
+
+databases:
+  - name: fitgen-db
+    engine: PG
+    version: "16"
+    size: db-s-dev-database
+    num_nodes: 1
