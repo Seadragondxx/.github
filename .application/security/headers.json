@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json.schemastore.org/web-types.json",
+  "_comment": "Security headers configuration for all platforms",
+  "headers": {
+    "Strict-Transport-Security": {
+      "value": "max-age=31536000; includeSubDomains; preload",
+      "description": "Force HTTPS for 1 year, include subdomains, allow HSTS preload"
+    },
+    "Content-Security-Policy": {
+      "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
+      "description": "Restrict resource loading to same origin with necessary exceptions",
+      "strict_value": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
+    },
+    "X-Content-Type-Options": {
+      "value": "nosniff",
+      "description": "Prevent MIME type sniffing"
+    },
+    "X-Frame-Options": {
+      "value": "DENY",
+      "description": "Prevent clickjacking by disallowing framing"
+    },
+    "X-XSS-Protection": {
+      "value": "1; mode=block",
+      "description": "Enable XSS filter (legacy, but still useful)"
+    },
+    "Referrer-Policy": {
+      "value": "strict-origin-when-cross-origin",
+      "description": "Send referrer for same-origin, origin-only for cross-origin"
+    },
+    "Permissions-Policy": {
+      "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()",
+      "description": "Disable sensitive features by default"
+    },
+    "Cross-Origin-Opener-Policy": {
+      "value": "same-origin",
+      "description": "Isolate browsing context"
+    },
+    "Cross-Origin-Resource-Policy": {
+      "value": "same-origin",
+      "description": "Prevent cross-origin resource loading"
+    },
+    "Cross-Origin-Embedder-Policy": {
+      "value": "require-corp",
+      "description": "Require CORP for all resources (enables SharedArrayBuffer)"
+    }
+  },
+  "remove_headers": [
+    "X-Powered-By",
+    "Server",
+    "X-AspNet-Version",
+    "X-AspNetMvc-Version"
+  ]
+}
