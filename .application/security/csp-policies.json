@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json.schemastore.org/csp.json",
+  "_comment": "Content Security Policy configurations for different environments",
+
+  "development": {
+    "policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' ws: wss: http://localhost:* https:; frame-src 'self'; worker-src 'self' blob:;",
+    "report_only": true,
+    "notes": "Relaxed policy for hot reload and dev tools"
+  },
+
+  "staging": {
+    "policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-ancestors 'self'; base-uri 'self'; form-action 'self';",
+    "report_only": true,
+    "report_uri": "/api/csp-report",
+    "notes": "Stricter but still allows inline for testing"
+  },
+
+  "production": {
+    "policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;",
+    "report_only": false,
+    "report_uri": "/api/csp-report",
+    "notes": "Strict production policy"
+  },
+
+  "production_strict": {
+    "policy": "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content;",
+    "report_only": false,
+    "report_uri": "/api/csp-report",
+    "notes": "Maximum security - may break some features"
+  },
+
+  "directives_reference": {
+    "default-src": "Fallback for other directives",
+    "script-src": "Valid sources for JavaScript",
+    "style-src": "Valid sources for CSS",
+    "img-src": "Valid sources for images",
+    "font-src": "Valid sources for fonts",
+    "connect-src": "Valid sources for fetch/XHR/WebSocket",
+    "media-src": "Valid sources for audio/video",
+    "object-src": "Valid sources for plugins (Flash, etc)",
+    "frame-src": "Valid sources for iframes",
+    "frame-ancestors": "Who can embed this page",
+    "base-uri": "Valid URLs for <base>",
+    "form-action": "Valid form submission targets",
+    "worker-src": "Valid sources for workers",
+    "manifest-src": "Valid sources for manifest",
+    "upgrade-insecure-requests": "Upgrade HTTP to HTTPS",
+    "block-all-mixed-content": "Block HTTP resources on HTTPS pages"
+  },
+
+  "nonce_usage": {
+    "example": "<script nonce=\"{NONCE}\">...</script>",
+    "header": "script-src 'self' 'nonce-{NONCE}'",
+    "notes": "Generate unique nonce per request for inline scripts"
+  },
+
+  "hash_usage": {
+    "example": "script-src 'self' 'sha256-{HASH}'",
+    "generate": "echo -n 'console.log(1)' | openssl dgst -sha256 -binary | base64",
+    "notes": "Use for static inline scripts that don't change"
+  }
+}

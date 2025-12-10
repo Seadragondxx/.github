@@ -1,0 +1,33 @@
+# Render Blueprint for Next.js with Prisma
+# See https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: fitgen-app
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: starter
+    region: oregon
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: AUTH_SECRET
+        generateValue: true
+      - key: AUTH_GITHUB_ID
+        sync: false
+      - key: AUTH_GITHUB_SECRET
+        sync: false
+
+databases:
+  - name: fitgen-db
+    plan: starter
+    databaseName: fitgen
+    user: fitgen
+    region: oregon
+
+# Optional: Connect web service to database
+# After creating, link DATABASE_URL to the database internal URL

@@ -1,0 +1,96 @@
+{
+  "_comment": "Content Security Policy for Live Streaming Platform",
+  "_security_note": "SECURITY PRIORITY: Only whitelist domains you control or trust",
+
+  "production": {
+    "policy": {
+      "default-src": ["'self'"],
+      "script-src": ["'self'", "'wasm-unsafe-eval'"],
+      "style-src": ["'self'", "'unsafe-inline'"],
+      "img-src": ["'self'", "data:", "blob:", "https:"],
+      "font-src": ["'self'", "data:"],
+      "media-src": [
+        "'self'",
+        "blob:",
+        "data:",
+        "mediastream:",
+        "https://*.cloudflarestream.com",
+        "https://*.mux.com",
+        "https://*.akamaized.net",
+        "https://*.cdn.com"
+      ],
+      "connect-src": [
+        "'self'",
+        "https:",
+        "wss:",
+        "https://*.supabase.co",
+        "wss://*.supabase.co",
+        "https://*.cloudflarestream.com",
+        "https://*.mux.com"
+      ],
+      "worker-src": ["'self'", "blob:"],
+      "frame-src": ["'self'", "blob:"],
+      "frame-ancestors": ["'none'"],
+      "base-uri": ["'self'"],
+      "form-action": ["'self'"],
+      "upgrade-insecure-requests": true
+    },
+    "header": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; media-src 'self' blob: data: mediastream: https://*.cloudflarestream.com https://*.mux.com; connect-src 'self' https: wss:; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
+  },
+
+  "webrtc": {
+    "_comment": "Additional policy for WebRTC peer-to-peer streaming",
+    "policy": {
+      "connect-src": [
+        "'self'",
+        "https:",
+        "wss:",
+        "stun:",
+        "turn:"
+      ]
+    },
+    "notes": "WebRTC requires STUN/TURN servers for NAT traversal"
+  },
+
+  "streaming_providers": {
+    "cloudflare_stream": {
+      "media-src": "https://*.cloudflarestream.com",
+      "connect-src": "https://*.cloudflarestream.com",
+      "frame-src": "https://*.cloudflarestream.com"
+    },
+    "mux": {
+      "media-src": "https://*.mux.com https://stream.mux.com",
+      "connect-src": "https://*.mux.com",
+      "img-src": "https://image.mux.com"
+    },
+    "aws_ivs": {
+      "media-src": "https://*.live-video.net",
+      "connect-src": "https://*.live-video.net wss://*.live-video.net"
+    },
+    "agora": {
+      "connect-src": "https://*.agora.io wss://*.agora.io",
+      "media-src": "blob:"
+    },
+    "livekit": {
+      "connect-src": "https://*.livekit.cloud wss://*.livekit.cloud",
+      "media-src": "blob: mediastream:"
+    }
+  },
+
+  "permissions_policy": {
+    "_comment": "Enable required features for streaming",
+    "header": "camera=(self), microphone=(self), display-capture=(self), autoplay=(self), fullscreen=(self), picture-in-picture=(self)",
+    "breakdown": {
+      "camera": "(self)",
+      "microphone": "(self)",
+      "display-capture": "(self)",
+      "autoplay": "(self)",
+      "fullscreen": "(self)",
+      "picture-in-picture": "(self)",
+      "speaker-selection": "(self)",
+      "bluetooth": "()",
+      "geolocation": "()",
+      "payment": "()"
+    }
+  }
+}
